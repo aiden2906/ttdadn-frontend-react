@@ -2,6 +2,7 @@ import React from "react";
 import routes from "./configs/routes";
 import Menu from "./components/menu";
 import Loadable from "react-loadable";
+import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import MyLoadingComponent from "./components/myLoadingComponent";
 import {
   BrowserRouter as Router,
