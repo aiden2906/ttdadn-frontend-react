@@ -1,5 +1,8 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+
+import Footer from '../components/footer';
+
 const axios = require('axios');
 
 const Login = (props) => {
@@ -30,73 +33,87 @@ const Login = (props) => {
   }
 
   return (
-    <div className="App">
-      <nav className="navbar navbar-expand-lg navbar-light fixed-top">
-        <div className="container">
-          <Link className="navbar-brand" to={'/login'}>
-            Login page
-          </Link>
-          <div className="collapse navbar-collapse" id="navbarTogglerDemo02">
-            <ul className="navbar-nav ml-auto">
-              <li className="nav-item">
-                <Link className="nav-link" to={'/login'}>
-                  Login
-                </Link>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </nav>
-      <div className="auth-wrapper">
-        <div className="auth-inner">
-          <form>
-            <h3>Sign In</h3>
-
-            <div className="form-group">
-              <label>Email address</label>
-              <input
-                type="email"
-                className="form-control"
-                placeholder="Enter email"
-                ref={usernameRef}
-              />
-            </div>
-
-            <div className="form-group">
-              <label>Password</label>
-              <input
-                type="password"
-                className="form-control"
-                placeholder="Enter password"
-                ref={passwordRef}
-              />
-            </div>
-
-            <div className="form-group">
-              <div className="custom-control custom-checkbox">
-                <input
-                  type="checkbox"
-                  className="custom-control-input"
-                  id="customCheck1"
-                />
-                <label className="custom-control-label" htmlFor="customCheck1">
-                  Remember me
-                </label>
+    <div id="layoutAuthentication">
+      <div id="layoutAuthentication_content">
+        <main>
+          <div class="container">
+            <div class="row justify-content-center">
+              <div class="col-lg-5">
+                <div class="card shadow-lg border-0 rounded-lg mt-5">
+                  <div class="card-header">
+                    <h3 class="text-center font-weight-light my-4">Login</h3>
+                  </div>
+                  <div class="card-body">
+                    <form>
+                      <div class="form-group">
+                        <label class="small mb-1" for="inputEmailAddress">
+                          Email
+                        </label>
+                        <input
+                          class="form-control py-4"
+                          id="inputEmailAddress"
+                          type="email"
+                          placeholder="Enter email address"
+                          ref={usernameRef}
+                        />
+                      </div>
+                      <div class="form-group">
+                        <label class="small mb-1" for="inputPassword">
+                          Password
+                        </label>
+                        <input
+                          class="form-control py-4"
+                          id="inputPassword"
+                          type="password"
+                          placeholder="Enter password"
+                          ref={passwordRef}
+                        />
+                      </div>
+                      <div class="form-group">
+                        <div class="custom-control custom-checkbox">
+                          <input
+                            class="custom-control-input"
+                            id="rememberPasswordCheck"
+                            type="checkbox"
+                          />
+                          <label
+                            class="custom-control-label"
+                            for="rememberPasswordCheck"
+                          >
+                            Remember password
+                          </label>
+                        </div>
+                      </div>
+                      <div class="form-group d-flex align-items-center justify-content-between mt-4 mb-0">
+                        <a class="small" href="/password">
+                          Forgot Password?
+                        </a>
+                        <button
+                          type="submit"
+                          className="btn btn-primary"
+                          onClick={handleSubmit}
+                        >
+                          Login
+                        </button>
+                        {/* <a class="btn btn-primary" href="index.html">
+                          Login
+                        </a> */}
+                      </div>
+                    </form>
+                  </div>
+                  <div class="card-footer text-center">
+                    <div class="small">
+                      <a href="register">Need an account? Sign up!</a>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
-
-            <button
-              type="submit"
-              className="btn btn-primary btn-block"
-              onClick={handleSubmit}
-            >
-              Submit
-            </button>
-            <p className="forgot-password text-right">
-              <a href="https://localhost:4000">Forgot password?</a>
-            </p>
-          </form>
-        </div>
+          </div>
+        </main>
+      </div>
+      <div id="layoutAuthentication_footer">
+        <Footer />
       </div>
     </div>
   );
