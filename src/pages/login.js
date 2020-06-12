@@ -1,20 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+const axios = require('axios');
 
 const Login = (props) => {
+  const usernameRef = useRef(null);
+  const passwordRef = useRef(null);
+
   const token = localStorage.getItem('token');
   if (token) {
     props.history.push('/home');
   }
-  const [password, setPassword] = useState('');
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
-    if (password === '123') {
-      localStorage.setItem('token', '123456789');
-      props.history.push('/home');
-    }
-    setPassword('');
-    return null;
+    const token = await axios.post('http://localhost:4000/login', {
+      username: usernameRef.current.value,
+      password: passwordRef.current.value,
+    }, {headers:{}});
+    console.log(token);
   }
 
   return (
@@ -46,6 +48,7 @@ const Login = (props) => {
                 type="email"
                 className="form-control"
                 placeholder="Enter email"
+                ref={usernameRef}
               />
             </div>
 
@@ -55,6 +58,7 @@ const Login = (props) => {
                 type="password"
                 className="form-control"
                 placeholder="Enter password"
+                ref={passwordRef}
               />
             </div>
 
@@ -71,7 +75,11 @@ const Login = (props) => {
               </div>
             </div>
 
-            <button type="submit" className="btn btn-primary btn-block">
+            <button
+              type="submit"
+              className="btn btn-primary btn-block"
+              onClick={handleSubmit}
+            >
               Submit
             </button>
             <p className="forgot-password text-right">

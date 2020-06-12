@@ -12,5 +12,11 @@ export default [
     component: 'Home',
     path: '/home',
     isProtected: true
+  },
+  {
+    title: 'Register | Sample App',
+    component: 'Register',
+    path: '/register',
+    isProtected: true
   }
 ]
