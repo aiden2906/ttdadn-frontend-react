@@ -1,22 +1,32 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 const axios = require('axios');
 
 const Login = (props) => {
+  console.log(props);
+  const [token, setToken] = useState(null);
   const usernameRef = useRef(null);
   const passwordRef = useRef(null);
 
-  const token = localStorage.getItem('token');
-  if (token) {
+  const x = localStorage.getItem('token');
+  if (x) {
     props.history.push('/home');
   }
+
   async function handleSubmit(e) {
     e.preventDefault();
-    const token = await axios.post('http://localhost:4000/login', {
-      username: usernameRef.current.value,
-      password: passwordRef.current.value,
-    }, {headers:{}});
-    console.log(token);
+    const { data } = await axios.post(
+      'http://localhost:4000/user/login',
+      {
+        username: usernameRef.current.value,
+        password: passwordRef.current.value,
+      },
+      { crossdomain: true }
+    );
+    localStorage.setItem('token', data);
+    setToken(data);
+    // props.history.push('/register');
+    //TODO: check token
   }
 
   return (

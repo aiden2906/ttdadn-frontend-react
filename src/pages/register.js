@@ -1,10 +1,6 @@
-import React from 'react'
+import React from 'react';
 
 export default function Register() {
-  return (
-    <div>
-      sdlkflfadsf
-    </div>
-  )
+  console.log('asdkjfh');
+  return <div>sdlkflfadsf</div>;
 }
-

@@ -3,19 +3,19 @@
 export default [
   {
     title: 'Login Page | Sample App',
-    component: 'Login',
+    component: 'login',
     path: '/login',
     isProtected: false
   },
   {
     title: 'Home | Sample App',
-    component: 'Home',
+    component: 'home',
     path: '/home',
     isProtected: true
   },
   {
     title: 'Register | Sample App',
-    component: 'Register',
+    component: 'register',
     path: '/register',
     isProtected: true
   }
