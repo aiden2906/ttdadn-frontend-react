@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Route } from 'react-router-dom';
+import TopNav from './topnav';
+import SideNav from './sidenav';
+import Footer from './footer';
 
 export default class Menu extends Component {
   constructor(props) {
@@ -13,22 +16,16 @@ export default class Menu extends Component {
   }
 
   render() {
-    console.log(this.props);
     return (
       <div>
-        <ul id="menu">
-          {this.props.routes
-            .filter((route) => route.path !== '/login')
-            .map((route, index) => (
-              <li key={index}>
-                <Link to={route.path}>{route.path}</Link>
-              </li>
-            ))}
-        </ul>
-        <button data-test="logout__btn" onClick={this.handleClickLogout}>
-          Logout
-        </button>
-        {this.props.children}
+        <TopNav />
+        <div id="layoutSidenav">
+          <Route component={SideNav}></Route>
+          <div id="layoutSidenav_content">
+            {this.props.children}
+            <Footer />
+          </div>
+        </div>
       </div>
     );
   }

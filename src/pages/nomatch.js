@@ -1,7 +1,5 @@
 import React from "react";
 
-import Footer from "../components/footer";
-
 const Nomatch = () => {
   return (
     <div id="layoutError">
@@ -24,9 +22,6 @@ const Nomatch = () => {
             </div>
           </div>
         </main>
-      </div>
-      <div id="layoutError_footer">
-        <Footer />
       </div>
     </div>
   );

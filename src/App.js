@@ -1,48 +1,36 @@
-import React from "react";
-import routes from "./configs/routes";
-import Menu from "./components/menu";
-import Loadable from "react-loadable";
-<<<<<<< HEAD
-=======
-import "./css/styles.css";
->>>>>>> Add pages
-import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
-import MyLoadingComponent from "./components/myLoadingComponent";
+import React from 'react';
+import routes from './configs/routes';
+import Loadable from 'react-loadable';
+import './css/styles.css';
+import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+import MyLoadingComponent from './components/myLoadingComponent';
+import SideNav from './components/sidenav';
+import TopNav from './components/topnav';
+import Footer from './components/footer';
 import {
   BrowserRouter as Router,
   Route,
   Redirect,
-<<<<<<< HEAD
-  Switch
-=======
   Switch,
->>>>>>> Add pages
-} from "react-router-dom";
+} from 'react-router-dom';
 
 class App extends React.Component {
   protectedRoute({ component: Component, routesMenu, ...rest }) {
     return (
       <Route
         {...rest}
-<<<<<<< HEAD
-        render={props =>
-=======
         render={(props) =>
->>>>>>> Add pages
-          localStorage.getItem("token") ? (
-            <Menu routes={routesMenu} {...props}>
-              <Component {...props} />
-            </Menu>
+          localStorage.getItem('token') ? (
+            <Component {...props}></Component>
           ) : (
             <Redirect
-              to={{ pathname: "/login", state: { from: props.location } }}
+              to={{ pathname: '/login', state: { from: props.location } }}
             />
           )
         }
       ></Route>
     );
   }
-
   render() {
     return (
       <Router>
@@ -50,56 +38,50 @@ class App extends React.Component {
           <Route exact path="/">
             <Redirect to="/login"></Redirect>
           </Route>
-          <Route
-            path="/login"
-            component={Loadable({
-              loader: () => import(`./pages/login`),
-              loading: MyLoadingComponent
-            })}
-          ></Route>
           {routes
-<<<<<<< HEAD
-            .filter(route => route.isProtected === true)
-            .map((route, index) => (
-              <this.protectedRoute
-                exact
-                key={index}
-                path={route.path}
-                component={Loadable({
-                  loader: () => import(`./pages/${route.component}`),
-                  loading: MyLoadingComponent
-                })}
-                routesMenu={routes}
-              ></this.protectedRoute>
-            ))}
-=======
-            .filter((route) => route.isProtected === true)
+            .filter((route) => route.isProtected === false)
             .map((route, index) => {
-              const token = localStorage.getItem("token");
-              if (token) {
-                return (
-                  <Route
-                    exact
-                    path={route.path}
-                    component={Loadable({
-                      loader: () => import(`./pages${route.path}`),
-                      loading: MyLoadingComponent,
-                    })}
-                  ></Route>
-                );
-              }
-              return <Redirect to={{ pathname: "/login" }}></Redirect>;
+              return (
+                <Route
+                  key={index}
+                  path={route.path}
+                  component={Loadable({
+                    loader: () => import(`./pages${route.path}`),
+                    loading: MyLoadingComponent,
+                  })}
+                ></Route>
+              );
             })}
->>>>>>> Add pages
+          <div>
+            <TopNav />
+            <div id="layoutSidenav">
+              <Route component={SideNav}></Route>
+              <div id="layoutSidenav_content">
+                {routes
+                  .filter((route) => route.isProtected === true)
+                  .map((route, index) => {
+                    return (
+                      <this.protectedRoute
+                        exact
+                        key={index}
+                        path={route.path}
+                        component={Loadable({
+                          loader: () => import(`./pages${route.path}`),
+                          loading: MyLoadingComponent,
+                        })}
+                        routesMenu={routes}
+                      ></this.protectedRoute>
+                    );
+                  })}
+                <Footer />
+              </div>
+            </div>
+          </div>
           <Route
             path="*"
             component={Loadable({
-              loader: () => import("./pages/nomatch"),
-<<<<<<< HEAD
-              loading: MyLoadingComponent
-=======
+              loader: () => import('./pages/nomatch'),
               loading: MyLoadingComponent,
->>>>>>> Add pages
             })}
           />
         </Switch>

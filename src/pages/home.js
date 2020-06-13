@@ -1,15 +1,7 @@
-import React from "react";
-import Footer from "../components/footer";
-import TopNav from "../components/topnav";
-import SideNav from "../components/sidenav";
+import React from 'react';
 
-const Home = () => {
+const Home = (props) => {
   return (
-    <div>
-      <TopNav />
-      <div id="layoutSidenav">
-        <SideNav />
-        <div id="layoutSidenav_content">
           <main>
             <div class="container-fluid">
               <h1 class="mt-4">Dashboard</h1>
@@ -144,10 +136,6 @@ const Home = () => {
               </div>
             </div>
           </main>
-          <Footer />
-        </div>
-      </div>
-    </div>
   );
 };
 

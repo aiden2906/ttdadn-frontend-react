@@ -6,29 +6,22 @@ import Footer from '../components/footer';
 const axios = require('axios');
 
 const Login = (props) => {
-  console.log(props);
+  const access_token = localStorage.getItem('token');
+  if (access_token) {
+    props.history.push('/home');
+  }
   const [token, setToken] = useState(null);
   const usernameRef = useRef(null);
   const passwordRef = useRef(null);
 
-  const x = localStorage.getItem('token');
-  if (x) {
-    props.history.push('/home');
-  }
-
   async function handleSubmit(e) {
     e.preventDefault();
-    const { data } = await axios.post(
-      'http://localhost:4000/user/login',
-      {
-        username: usernameRef.current.value,
-        password: passwordRef.current.value,
-      },
-      { crossdomain: true }
-    );
+    const { data } = await axios.post('http://localhost:4000/user/login', {
+      username: usernameRef.current.value,
+      password: passwordRef.current.value,
+    });
     localStorage.setItem('token', data);
     setToken(data);
-    // props.history.push('/register');
     //TODO: check token
   }
 
@@ -103,7 +96,7 @@ const Login = (props) => {
                   </div>
                   <div class="card-footer text-center">
                     <div class="small">
-                      <a href="register">Need an account? Sign up!</a>
+                      <Link to="/register">Need an account? Sign up!</Link>
                     </div>
                   </div>
                 </div>

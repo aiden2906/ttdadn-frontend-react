@@ -1,6 +1,11 @@
-import React from "react";
+import React from 'react';
 
-const SideNav = () => {
+const SideNav = (props) => {
+  function handleLogout() {
+    localStorage.removeItem('token');
+    props.history.push('/login');
+  }
+
   return (
     <div id="layoutSidenav_nav">
       <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
@@ -163,7 +168,11 @@ const SideNav = () => {
           <div class="small">Logged in as:</div>
           Start Bootstrap
           <br />
-          <button type="submit" className="btn btn-primary" onClick="">
+          <button
+            type="submit"
+            className="btn btn-primary"
+            onClick={handleLogout}
+          >
             Log out
           </button>
         </div>
