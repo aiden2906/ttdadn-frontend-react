@@ -1,11 +1,12 @@
-import React from 'react';
+import React from "react";
+import { Link } from "react-router-dom";
 
 const SideNav = (props) => {
   function handleLogout() {
-    localStorage.removeItem('token');
-    props.history.push('/login');
+    localStorage.removeItem("token");
+    props.history.push("/login");
   }
-
+  
   return (
     <div id="layoutSidenav_nav">
       <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
@@ -141,27 +142,27 @@ const SideNav = (props) => {
               </nav>
             </div> */}
             <div class="sb-sidenav-menu-heading">Addons</div>
-            <a class="nav-link" href="chart">
+            <Link to="/chart" class="nav-link">
               <div class="sb-nav-link-icon">
                 <i class="fas fa-chart-area"></i>
               </div>
               Charts
-            </a>
-            <a class="nav-link" href="table">
+            </Link>
+            <Link class="nav-link" to="table">
               <div class="sb-nav-link-icon">
                 <i class="fas fa-table"></i>
               </div>
               Tables
-            </a>
+            </Link>
             <div class="sb-sidenav-menu-heading">User area</div>
-            <a class="nav-link" href="profile">
+            <Link class="nav-link" to="profile">
               <div class="sb-nav-link-icon"></div>
               Profile
-            </a>
-            <a class="nav-link" href="notification">
+            </Link>
+            <Link class="nav-link" to="notification">
               <div class="sb-nav-link-icon"></div>
               Notification
-            </a>
+            </Link>
           </div>
         </div>
         <div class="sb-sidenav-footer">
