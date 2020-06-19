@@ -148,11 +148,11 @@ const SideNav = (props) => {
               </div>
               Charts
             </Link>
-            <Link class="nav-link" to="table">
+            <Link class="nav-link" to="controller">
               <div class="sb-nav-link-icon">
                 <i class="fa fa-table"></i>
               </div>
-              Tables
+              Controller
             </Link>
             <div class="sb-sidenav-menu-heading">User area</div>
             <Link class="nav-link" to="profile">

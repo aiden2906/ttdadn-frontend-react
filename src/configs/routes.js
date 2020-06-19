@@ -38,15 +38,15 @@ export default [
     isProtected: true,
   },
   {
-    title: "Table | Sample App",
-    component: "Table",
-    path: "/table",
-    isProtected: true,
-  },
-  {
     title: "Profile | Sample App",
     component: "Profile",
     path: "/profile",
+    isProtected: true,
+  },
+  {
+    title: "Controller | Sample App",
+    component: "Controller",
+    path: "/controller",
     isProtected: true,
   },
 ];
