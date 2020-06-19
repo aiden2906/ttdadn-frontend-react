@@ -1,67 +1,79 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
+import socketIOClient from 'socket.io-client';
 
-const Chart = (props) => {
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, AreaChart, linearGradient, Area } from 'recharts';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { Tab, Row, Col, Nav, Form, Button} from "react-bootstrap";
+
+import ChartContainer from "../components/ChartContainer/ChartContainer";
+import HistoryChart from "../components/HistoryChart/HistoryChart";
+
+import '../css/Chart.css';
+
+const ENDPOINT = 'http://127.0.0.1:4000';
+
+export default function Chart() {
+  const [history, setHistory] = useState([]);
+  const [sensor, setSensor] = useState([]);
+  const [data, setData] = useState({});
+
+  useEffect(() => {
+    const socket = socketIOClient(ENDPOINT);
+    socket.on('sensorChange', (data) => {
+      console.log(data);
+      let dataSensor = data[1];
+      let d = new Date();
+      let modifiedData =  {
+        history : data[0].history,
+        temp : dataSensor.temp,
+        humi : dataSensor.humi,
+        name : dataSensor.id,
+        time: d.getMinutes() + ":" + d.getSeconds(),
+        currentTime: d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds()
+      }
+      setSensor(currentHumidity => [...currentHumidity, modifiedData]);
+      setData({
+        humi: modifiedData.humi, 
+        temp: modifiedData.temp,
+        currentTime : modifiedData.currentTime
+      });
+      setHistory(currentHistory => [modifiedData.history, modifiedData.history, modifiedData.history])
+    });
+  }, []);
   return (
-    <main>
-      <div class="container-fluid">
-        <h1 class="mt-4">Charts</h1>
-        <ol class="breadcrumb mb-4">
-          <li class="breadcrumb-item">
-            <a href="index.html">Dashboard</a>
-          </li>
-          <li class="breadcrumb-item active">Charts</li>
-        </ol>
-        <div class="card mb-4">
-          <div class="card-body">
-            Thông tin được vẽ từ server{' '}
-            <a target="_blank" href="http://localhost">
-              MTTQ
-            </a>
-            .
-          </div>
-        </div>
-        <div class="card mb-4">
-          <div class="card-header">
-            <i class="fas fa-chart-area mr-1"></i>Area Chart Example
-          </div>
-          <div class="card-body">
-            <canvas id="myAreaChart" width="100%" height="30"></canvas>
-          </div>
-          <div class="card-footer small text-muted">
-            Updated yesterday at 11:59 PM
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-lg-6">
-            <div class="card mb-4">
-              <div class="card-header">
-                <i class="fas fa-chart-bar mr-1"></i>Bar Chart Example
-              </div>
-              <div class="card-body">
-                <canvas id="myBarChart" width="100%" height="50"></canvas>
-              </div>
-              <div class="card-footer small text-muted">
-                Updated yesterday at 11:59 PM
-              </div>
+    <div className="wrapper">
+        <Row>
+          <Col sm={12} className = "">
+            <div className = "chart-container">
+                <div className= "humidity_chart">
+                  <ChartContainer className ="line-chart" data = {sensor}/>
+                </div>
+                <div className = "week_chart">
+                  <HistoryChart className ="line-chart" history = {history[0]}/>
+                </div>
+                <div className = "form-info">
+                  <Form>
+                    <Form.Group controlId="formBasicEmail">
+                      <Form.Label>Humidity: </Form.Label>
+                      <Form.Text className="">
+                        {data.humi}
+                      </Form.Text>
+                      <br />
+                      <Form.Label>Temp: </Form.Label>
+                      <Form.Text className="">
+                        {data.temp}
+                      </Form.Text>
+                      <br />
+                      <Form.Label>Time: </Form.Label>
+                      <Form.Text className="">
+                        {data.currentTime}
+                      </Form.Text>
+                    </Form.Group>
+                  </Form>
+                </div>
             </div>
-          </div>
-          <div class="col-lg-6">
-            <div class="card mb-4">
-              <div class="card-header">
-                <i class="fas fa-chart-pie mr-1"></i>Pie Chart Example
-              </div>
-              <div class="card-body">
-                <canvas id="myPieChart" width="100%" height="50"></canvas>
-              </div>
-              <div class="card-footer small text-muted">
-                Updated yesterday at 11:59 PM
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </main>
+          </Col>
+        </Row>
+    </div>
   );
-};
-
-export default Chart;
+}
