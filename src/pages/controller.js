@@ -14,7 +14,8 @@ import Typography from "@material-ui/core/Typography";
 import Paper from "@material-ui/core/Paper";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
-import CustomizedRadios from "./radio";
+import CustomizedSwitch from "../components/customerSwitch";
+import CustomizedSlider from "../components/customerSlider";
 const axios = require("axios");
 
 const useRowStyles = makeStyles({
@@ -66,6 +67,7 @@ function Row(props) {
                   <TableRow>
                     <TableCell align="center">Device</TableCell>
                     <TableCell align="center">Status</TableCell>
+                    <TableCell align="center">Level</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -73,7 +75,16 @@ function Row(props) {
                     <TableRow key={devicesRow.device}>
                       <TableCell align="center">{devicesRow.device}</TableCell>
                       <TableCell style={{ textAlign: "center" }}>
-                        <CustomizedRadios status={devicesRow.status} device={devicesRow.device}/>
+                        <CustomizedSwitch
+                          status={devicesRow.status}
+                          device={devicesRow.device}
+                        />
+                      </TableCell>
+                      <TableCell align="center">
+                        <CustomizedSlider
+                          level={devicesRow.level}
+                          device={devicesRow.device}
+                        />
                       </TableCell>
                     </TableRow>
                   ))}
@@ -136,10 +147,6 @@ export default function Controller() {
     temp: 0,
     humi: 0,
   });
-
-  console.log(control);
-  console.log(sensor);
-
   useEffect(() => {
     axios
       .get("http://localhost:4000/control")
@@ -182,9 +189,12 @@ export default function Controller() {
 
           <Row
             row={createData("Room 1", sensor.temp, sensor.humi, [
-              { device: "LightD", status: control.status },
+              {
+                device: "LightD",
+                status: control.status,
+                level: control.level,
+              },
             ])}
-
           ></Row>
         </TableBody>
       </Table>
