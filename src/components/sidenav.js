@@ -6,19 +6,19 @@ const SideNav = (props) => {
     localStorage.removeItem("token");
     props.history.push("/login");
   }
-  
+
   return (
     <div id="layoutSidenav_nav">
       <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
         <div class="sb-sidenav-menu">
           <div class="nav">
             <div class="sb-sidenav-menu-heading">Core</div>
-            <a class="nav-link" href="/">
+            <Link class="nav-link" to="/">
               <div class="sb-nav-link-icon">
-                <i class="fas fa-tachometer-alt"></i>
+                <i class="fa fa-tachometer" aria-hidden="true"></i>
               </div>
               Dashboard
-            </a>
+            </Link>
             {/* <div class="sb-sidenav-menu-heading">Interface</div>
             <a
               class="nav-link collapsed"
@@ -144,23 +144,27 @@ const SideNav = (props) => {
             <div class="sb-sidenav-menu-heading">Addons</div>
             <Link to="/chart" class="nav-link">
               <div class="sb-nav-link-icon">
-                <i class="fas fa-chart-area"></i>
+                <i class="fa fa-bar-chart" aria-hidden="true"></i>
               </div>
               Charts
             </Link>
             <Link class="nav-link" to="table">
               <div class="sb-nav-link-icon">
-                <i class="fas fa-table"></i>
+                <i class="fa fa-table"></i>
               </div>
               Tables
             </Link>
             <div class="sb-sidenav-menu-heading">User area</div>
             <Link class="nav-link" to="profile">
-              <div class="sb-nav-link-icon"></div>
+              <div class="sb-nav-link-icon">
+                <i class="fa fa-user" aria-hidden="true"></i>
+              </div>
               Profile
             </Link>
             <Link class="nav-link" to="notification">
-              <div class="sb-nav-link-icon"></div>
+              <div class="sb-nav-link-icon">
+                <i class="fa fa-bell" aria-hidden="true"></i>
+              </div>
               Notification
             </Link>
           </div>

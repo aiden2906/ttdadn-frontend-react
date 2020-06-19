@@ -1,14 +1,14 @@
-import React, { useState, useRef } from 'react';
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import React, { useState, useRef } from "react";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
-import Footer from '../components/footer';
+import Footer from "../components/footer";
 
-const axios = require('axios');
+const axios = require("axios");
 
 const Login = (props) => {
-  const access_token = localStorage.getItem('token');
+  const access_token = localStorage.getItem("token");
   if (access_token) {
-    props.history.push('/home');
+    props.history.push("/home");
   }
   const [token, setToken] = useState(null);
   const usernameRef = useRef(null);
@@ -16,11 +16,11 @@ const Login = (props) => {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    const { data } = await axios.post('http://localhost:4000/user/login', {
+    const { data } = await axios.post("http://localhost:4000/user/login", {
       username: usernameRef.current.value,
       password: passwordRef.current.value,
     });
-    localStorage.setItem('token', data);
+    localStorage.setItem("token", data);
     setToken(data);
     //TODO: check token
   }
