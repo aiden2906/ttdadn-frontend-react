@@ -23,41 +23,12 @@ import "../css/Chart.css";
 const axios = require("axios");
 const ENDPOINT = "http://127.0.0.1:4000";
 
-
 export default function Chart() {
   const [history, setHistory] = useState([]);
   const [sensor, setSensor] = useState([]);
   const [data, setData] = useState({});
-  const socket = socketIOClient(ENDPOINT);
   useEffect(() => {
-    axios.get(`http://localhost:4000/sensor`).then((res) => {
-      console.log(res);
-      let { data } = res;
-      let history = data[0].history;
-      let historyKey = [];
-      let historyValue = [];
-      if (history) {
-        historyKey = [...Object.keys(history)];
-        historyValue = [...Object.values(history)];
-        let listData = [];
-        for (let i = 0; i < 100; i += 9) {
-          let d = new Date(parseInt(historyKey[i]));
-          let modifiedData = {
-            time: d.getMinutes() + ":" + d.getSeconds(),
-            temp: historyValue[i].temp,
-            humi: historyValue[i].humi,
-            currentTime: d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds(),
-          };
-          listData = [...listData, modifiedData];
-          setSensor((currentHumidity) => [...currentHumidity, modifiedData]);
-          setData({
-            humi: modifiedData.humi,
-            temp: modifiedData.temp,
-            currentTime: modifiedData.currentTime,
-          });
-        }
-      }
-    });
+    const socket = socketIOClient(ENDPOINT);
     socket.on("sensorChange", (data) => {
       let dataSensor = data[0];
       let d = new Date();
@@ -77,6 +48,36 @@ export default function Chart() {
       });
       setHistory((currentHistory) => [modifiedData.history]);
     });
+
+    axios.get(`http://localhost:4000/sensor`).then((res) => {
+      console.log(res);
+      let { data } = res;
+      let history = data[0].history;
+      let historyKey = [];
+      let historyValue = [];
+      if (history) {
+        historyKey = [...Object.keys(history)];
+        historyValue = [...Object.values(history)];
+        let listData = [];
+        for (let i = 0; i < 100; i += 9) {
+          let d = new Date(parseInt(historyKey[i]));
+          let modifiedData = {
+            time: d.getMinutes() + ":" + d.getSeconds(),
+            temp: historyValue[i].temp,
+            humi: historyValue[i].humi,
+            currentTime:
+              d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds(),
+          };
+          listData = [...listData, modifiedData];
+          setSensor((currentHumidity) => [...currentHumidity, modifiedData]);
+          setData({
+            humi: modifiedData.humi,
+            temp: modifiedData.temp,
+            currentTime: modifiedData.currentTime,
+          });
+        }
+      }
+    });
   }, []);
   return (
     <div className="wrapper">
@@ -93,13 +94,19 @@ export default function Chart() {
               <Form>
                 <Form.Group controlId="formBasicEmail">
                   <Form.Label>Humidity: </Form.Label>
-                  <Form.Text style = {{color: "#231bbb"}} className="form-text">{data.humi?`${data.humi}%`:null}</Form.Text>
+                  <Form.Text style={{ color: "#231bbb" }} className="form-text">
+                    {data.humi ? `${data.humi}%` : null}
+                  </Form.Text>
                   <br />
                   <Form.Label>Temp: </Form.Label>
-                  <Form.Text style = {{color: "#c40202"}} className="form-text">{data.temp?`${data.temp} Celius`:null}</Form.Text>
+                  <Form.Text style={{ color: "#c40202" }} className="form-text">
+                    {data.temp ? `${data.temp} Celius` : null}
+                  </Form.Text>
                   <br />
                   <Form.Label>Time: </Form.Label>
-                  <Form.Text className="form-text">{data.currentTime}</Form.Text>
+                  <Form.Text className="form-text">
+                    {data.currentTime}
+                  </Form.Text>
                 </Form.Group>
               </Form>
             </div>
