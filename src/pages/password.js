@@ -10,7 +10,7 @@ const Password = (props) => {
     if (!usernameRef.current.value) {
       return;
     }
-    axios.post("http://localhost:4000/user/forget-password", {
+    axios.post("http://localhost:4000/api.user/forget-password", {
       username: usernameRef.current.value,
     });
     props.history.push("/reset-password");

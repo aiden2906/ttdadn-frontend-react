@@ -1,8 +1,22 @@
-import React from "react";
-
+import React, { useState, useContext, useRef } from "react";
 import Footer from "../components/footer";
+const axios = require("axios");
 
 export default function Register() {
+  const fullnameRef = useRef();
+  const emailRef = useRef();
+  const usernameRef = useRef();
+  const passwordRef = useRef();
+  const handleRegister = async (e) => {
+    e.preventDefault()
+    await axios.post("http://localhost:4000/api.user", {
+      username: usernameRef.current.value,
+      password: passwordRef.current.value,
+      fullname: fullnameRef.current.value,
+      email: emailRef.current.value,
+    });
+  };
+
   return (
     <div id="layoutAuthentication">
       <div id="layoutAuthentication_content">
@@ -22,26 +36,28 @@ export default function Register() {
                         <div class="col-md-6">
                           <div class="form-group">
                             <label class="small mb-1" for="inputFirstName">
-                              First Name
+                              Full name
                             </label>
                             <input
                               class="form-control py-4"
                               id="inputFirstName"
                               type="text"
-                              placeholder="Enter first name"
+                              placeholder="Enter full name"
+                              ref={fullnameRef}
                             />
                           </div>
                         </div>
                         <div class="col-md-6">
                           <div class="form-group">
                             <label class="small mb-1" for="inputLastName">
-                              Last Name
+                              Username
                             </label>
                             <input
                               class="form-control py-4"
                               id="inputLastName"
                               type="text"
-                              placeholder="Enter last name"
+                              placeholder="Enter username"
+                              ref={usernameRef}
                             />
                           </div>
                         </div>
@@ -56,6 +72,7 @@ export default function Register() {
                           type="email"
                           aria-describedby="emailHelp"
                           placeholder="Enter email address"
+                          ref={emailRef}
                         />
                       </div>
                       <div class="form-row">
@@ -69,6 +86,7 @@ export default function Register() {
                               id="inputPassword"
                               type="password"
                               placeholder="Enter password"
+                              ref={passwordRef}
                             />
                           </div>
                         </div>
@@ -89,8 +107,8 @@ export default function Register() {
                           </div>
                         </div>
                       </div>
-                      <div class="form-group mt-4 mb-0">
-                        <a class="btn btn-primary btn-block" href="login.html">
+                      <div class="form-group mt-4 mb-0" onClick={handleRegister}>
+                        <a class="btn btn-primary btn-block">
                           Create Account
                         </a>
                       </div>

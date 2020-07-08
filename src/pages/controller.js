@@ -59,15 +59,16 @@ function Row(props) {
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
           <Collapse in={open} timeout="auto" unmountOnExit>
             <Box margin={1}>
-              <Typography variant="h6" gutterBottom component="div">
-                List Of Devices
-              </Typography>
-              <Table size="small" aria-label="purchases">
+              <Table
+                size="small"
+                aria-label="collapsible table"
+                style={{ background: "#E2E4E6", borderRadius: "5px" }}
+              >
                 <TableHead>
                   <TableRow>
-                    <TableCell align="center">Device</TableCell>
-                    <TableCell align="center">Status</TableCell>
-                    <TableCell align="center">Level</TableCell>
+                    <TableCell align="center" style={{width:'30%'}}>Device</TableCell>
+                    <TableCell align="center" style={{width:'33%'}}>Status</TableCell>
+                    <TableCell align="center" style={{width:'33%'}}>Level</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -112,32 +113,6 @@ Row.propTypes = {
   }).isRequired,
 };
 
-const rows = [
-  createData("H6-123", 30, 75, [
-    { device: "Điều Hoà 1", status: 0 },
-    { device: "Điều hoà 2", status: 2 },
-  ]),
-  // createData("H2-102", 31, 60, [
-  //   { device: "Điều Hoà 1", status: 3 },
-  //   { device: "Điều Hoà 2", status: 2 },
-  //   { device: "Điều Hoà 3", status: 0 },
-  // ]),
-  // createData("H1-201", 29, 85, [
-  //   { device: "Điều Hoà 1", status: 0 },
-  //   { device: "Điều Hoà 2", status: 0 },
-  // ]),
-  // createData("H2-202", 30.5, 75, [
-  //   { device: "Điều Hoà 1", status: 2 },
-  //   { device: "Điều Hoà 2", status: 2 },
-  // ]),
-  // createData("H2-113", 31, 67, [
-  //   { device: "Điều Hoà 1", status: 1 },
-  //   { device: "Điều Hoà 2", status: 0 },
-  //   { device: "Điều Hoà 3", status:  1 },
-  //   { device: "Điều Hoà 4", status: 3 },
-  // ]),
-];
-
 export default function Controller() {
   const [control, setControl] = useState({
     status: 0,
@@ -168,36 +143,29 @@ export default function Controller() {
   }, []);
 
   return (
-    <TableContainer component={Paper}>
-      <Table aria-label="collapsible table">
-        <TableHead>
-          <TableRow>
-            <TableCell
-              align="center"
-              style={{ display: "flex", justifyContent: "center" }}
-            >
-              Room{" "}
-            </TableCell>
-            <TableCell align="center">Temperature ( {"\u00b0"} C )</TableCell>
-            <TableCell align="center">Humidity ( % )</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {/* {rows.map((row) => (
-            <Row key={row.name} row={row} />
-          ))} */}
-
-          <Row
-            row={createData("Room 1", sensor.temp, sensor.humi, [
-              {
-                device: "LightD",
-                status: control.status,
-                level: control.level,
-              },
-            ])}
-          ></Row>
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <div className="container-fluid mt-3">
+      <TableContainer component={Paper}>
+        <Table aria-label="collapsible table">
+          <TableHead>
+            <TableRow>
+              <TableCell align="center">Room </TableCell>
+              <TableCell align="center">Temperature ( {"\u00b0"} C )</TableCell>
+              <TableCell align="center">Humidity ( % )</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            <Row
+              row={createData("Room 1", sensor.temp, sensor.humi, [
+                {
+                  device: "LightD",
+                  status: control.status,
+                  level: control.level,
+                },
+              ])}
+            ></Row>
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </div>
   );
 }

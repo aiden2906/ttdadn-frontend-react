@@ -49,4 +49,10 @@ export default [
     path: "/controller",
     isProtected: true,
   },
+  {
+    title: "Admin | Sample App",
+    component: "Admin",
+    path: "/admin",
+    isProtected: true,
+  },
 ];

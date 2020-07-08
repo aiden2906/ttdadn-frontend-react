@@ -1,18 +1,5 @@
 import React, { useEffect, useState } from "react";
 import socketIOClient from "socket.io-client";
-
-import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  AreaChart,
-  linearGradient,
-  Area,
-} from "recharts";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Tab, Row, Col, Nav, Form, Button } from "react-bootstrap";
 
@@ -49,35 +36,41 @@ export default function Chart() {
       setHistory((currentHistory) => [modifiedData.history]);
     });
 
-    axios.get(`http://localhost:4000/sensor`).then((res) => {
-      console.log(res);
-      let { data } = res;
-      let history = data[0].history;
-      let historyKey = [];
-      let historyValue = [];
-      if (history) {
-        historyKey = [...Object.keys(history)];
-        historyValue = [...Object.values(history)];
-        let listData = [];
-        for (let i = 0; i < 100; i += 9) {
-          let d = new Date(parseInt(historyKey[i]));
-          let modifiedData = {
-            time: d.getMinutes() + ":" + d.getSeconds(),
-            temp: historyValue[i].temp,
-            humi: historyValue[i].humi,
-            currentTime:
-              d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds(),
-          };
-          listData = [...listData, modifiedData];
-          setSensor((currentHumidity) => [...currentHumidity, modifiedData]);
-          setData({
-            humi: modifiedData.humi,
-            temp: modifiedData.temp,
-            currentTime: modifiedData.currentTime,
-          });
+    axios
+      .get(`http://localhost:4000/sensor`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      })
+      .then((res) => {
+        console.log(res);
+        let { data } = res;
+        let history = data[0].history;
+        let historyKey = [];
+        let historyValue = [];
+        if (history) {
+          historyKey = [...Object.keys(history)];
+          historyValue = [...Object.values(history)];
+          let listData = [];
+          for (let i = 0; i < 100; i += 9) {
+            let d = new Date(parseInt(historyKey[i]));
+            let modifiedData = {
+              time: d.getMinutes() + ":" + d.getSeconds(),
+              temp: historyValue[i].temp,
+              humi: historyValue[i].humi,
+              currentTime:
+                d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds(),
+            };
+            listData = [...listData, modifiedData];
+            setSensor((currentHumidity) => [...currentHumidity, modifiedData]);
+            setData({
+              humi: modifiedData.humi,
+              temp: modifiedData.temp,
+              currentTime: modifiedData.currentTime,
+            });
+          }
         }
-      }
-    });
+      });
   }, []);
   return (
     <div className="wrapper">
@@ -103,6 +96,9 @@ export default function Chart() {
                     {data.temp ? `${data.temp} Celius` : null}
                   </Form.Text>
                   <br />
+                  {
+                    //TODO: format time 00:00:00
+                  }
                   <Form.Label>Time: </Form.Label>
                   <Form.Text className="form-text">
                     {data.currentTime}

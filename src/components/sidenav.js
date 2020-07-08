@@ -167,6 +167,12 @@ const SideNav = (props) => {
               </div>
               Notification
             </Link>
+            <Link class="nav-link" to="admin">
+              <div class="sb-nav-link-icon">
+                <i class="fa fa-user-secret" aria-hidden="true"></i>
+              </div>
+              Admin
+            </Link>
           </div>
         </div>
         <div class="sb-sidenav-footer">

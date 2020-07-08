@@ -16,7 +16,7 @@ const Login = (props) => {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    const { data } = await axios.post("http://localhost:4000/user/login", {
+    const { data } = await axios.put("http://localhost:4000/api.user/login", {
       username: usernameRef.current.value,
       password: passwordRef.current.value,
     });
