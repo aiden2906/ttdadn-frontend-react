@@ -1,0 +1,14 @@
+.seen {
+  background-color: white;
+}
+.new {
+  background-color: beige;
+}
+.my-custom-scrollbar {
+  position: relative;
+  height: 530px;
+  overflow: auto;
+}
+.table-wrapper-scroll-y {
+  display: block;
+}

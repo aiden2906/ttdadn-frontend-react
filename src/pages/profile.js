@@ -1,4 +1,5 @@
 import React, { useLayoutEffect, useContext, useState, useRef } from "react";
+import * as env from '../configs/environment'
 const axios = require("axios");
 
 const Profile = () => {
@@ -11,7 +12,7 @@ const Profile = () => {
   const usernameRef = useRef(info.username);
   useLayoutEffect(() => {
     axios
-      .get("http://localhost:4000/api.user/me", {
+      .get(`${env.ENDPOINT}/api.user/me`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -40,7 +41,7 @@ const Profile = () => {
     }
     axios
       .put(
-        "http://localhost:4000/api.user",
+        `${env.ENDPOINT}/api.user`,
         {
           fullname: fullnameRef.current.value || "",
           email: emailRef.current.value || "",

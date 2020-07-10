@@ -1,40 +1,10 @@
-import React, { useLayoutEffect, useState } from "react";
-import { Tabs, Tab } from "react-bootstrap";
-import "react-notifications/lib/notifications.css";
-const axios = require("axios");
+import React, { useLayoutEffect, useState } from 'react';
+import { Tabs, Tab } from 'react-bootstrap';
+import * as env from '../configs/environment';
+const axios = require('axios');
 
 const Admin = () => {
-  const [users, setUsers] = useState([]);
-  const [humis, setHumis] = useState([]);
-  const [lightDs, setLightDs] = useState([]);
-  const [key, setKey] = useState("user");
-  useLayoutEffect(() => {
-    axios
-      .get("http://localhost:4000/api.user", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      })
-      .then((res) => res.data)
-      .then((data) => setUsers(data))
-      .catch((err) => console.log(err));
-  }, []);
-
-  const handleActive = (user) => {
-    axios
-      .put(
-        `http://localhost:4000/api.user/${user.id}/${
-          user.isActive ? "disable" : "active"
-        }`,
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      )
-      .catch((err) => console.log(err));
-  };
+  const [key, setKey] = useState('user');
 
   return (
     <div className="container-fluid mt-3">
@@ -46,29 +16,52 @@ const Admin = () => {
         }}
       >
         <Tab eventKey="user" title="User">
-          <TableUser users={users} handleActive={handleActive} />
+          <TableUser />
         </Tab>
         <Tab eventKey="humi" title="Humi">
-          <TableHumi humis={humis} />
+          <TableHumi />
         </Tab>
         <Tab eventKey="lightd" title="LightD">
-          <TableLightD lightDs={lightDs} />
+          <TableLightD />
         </Tab>
       </Tabs>
     </div>
   );
 };
 
-const TableUser = ({ users, handleActive }) => {
+const TableUser = React.memo(() => {
+  console.log('user render');
+  const [users, setUsers] = useState([]);
+  useLayoutEffect(() => {
+    axios
+      .get(`${env.ENDPOINT}/api.user`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      })
+      .then((res) => res.data)
+      .then((data) => setUsers(data.filter((item) => item.username !== 'admin')))
+      .catch((err) => console.log(err));
+  }, []);
+
+  const handleActive = (user) => {
+    axios
+      .put(
+        `${env.ENDPOINT}/api.user/${user.id}/${user.is_active ? 'disable' : 'active'}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
+        }
+      )
+      .then((res) => {})
+      .catch((err) => console.log(err));
+  };
   return (
-    <div class="card-body" style={{ background: "white" }}>
+    <div class="card-body" style={{ background: 'white' }}>
       <div class="table-responsive">
-        <table
-          class="table table-bordered"
-          id="dataTable"
-          width="100%"
-          cellspacing="0"
-        >
+        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0" style={{ height: '50%' }}>
           <thead>
             <tr>
               <th>Id</th>
@@ -83,41 +76,13 @@ const TableUser = ({ users, handleActive }) => {
           <tfoot>
             <tr>
               <th>Total</th>
-              <th>{users?.length || 0}</th>
+              <th colSpan="6">{users?.length || 0}</th>
             </tr>
           </tfoot>
           <tbody>
             {users
               ? users.map((user) => {
-                  return (
-                    <tr>
-                      <td>{user.id}</td>
-                      <td>{user.username}</td>
-                      <td>{user.fullname}</td>
-                      <td>{user.email}</td>
-                      <td>
-                        {user.createdAt
-                          ? new Date(user.createdAt).toLocaleDateString()
-                          : ""}
-                      </td>
-                      <td>
-                        {user.updatedAt
-                          ? new Date(user.updatedAt).toLocaleDateString()
-                          : ""}
-                      </td>
-                      <td>
-                        <button
-                          type="button"
-                          class={
-                            user.isActive ? "btn btn-danger" : "btn btn-success"
-                          }
-                          onClick={() => handleActive(user)}
-                        >
-                          {user.isActive ? "Disable" : "Active"}
-                        </button>
-                      </td>
-                    </tr>
-                  );
+                  return <Row user={user} />;
                 })
               : null}
           </tbody>
@@ -125,18 +90,64 @@ const TableUser = ({ users, handleActive }) => {
       </div>
     </div>
   );
+});
+
+const Row = ({ user: us }) => {
+  console.log('row render');
+  const [user, setUser] = useState(us);
+  const handleActive = (user) => {
+    axios
+      .put(
+        `${env.ENDPOINT}/api.user/${user.id}/${user.is_active ? 'disable' : 'active'}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
+        }
+      )
+      .then((res) => {
+        setUser({ ...user, is_active: !user.is_active });
+      })
+      .catch((err) => console.log(err));
+  };
+  return (
+    <tr>
+      <td>{user.id}</td>
+      <td>{user.username}</td>
+      <td>{user.fullname}</td>
+      <td>{user.email}</td>
+      <td>{user.created_at ? new Date(user.created_at).toLocaleDateString() : ''}</td>
+      <td>{user.updated_at ? new Date(user.updated_at).toLocaleDateString() : ''}</td>
+      <td>
+        <button type="button" class={user.is_active ? 'btn btn-danger' : 'btn btn-success'} onClick={() => handleActive(user)}>
+          {user.is_active ? 'Disable' : 'Active'}
+        </button>
+      </td>
+    </tr>
+  );
 };
 
-const TableHumi = ({ humis }) => {
+const TableHumi = React.memo(() => {
+  console.log('humi render');
+
+  const [humis, setHumis] = useState([]);
+  useLayoutEffect(() => {
+    axios
+      .get(`${env.ENDPOINT}/api.sensor`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      })
+      .then((res) => res.data)
+      .then((data) => setHumis(data))
+      .catch((err) => console.log(err));
+  }, []);
+
   return (
-    <div class="card-body" style={{ background: "white" }}>
+    <div class="card-body" style={{ background: 'white' }}>
       <div class="table-responsive">
-        <table
-          class="table table-bordered"
-          id="dataTable"
-          width="100%"
-          cellspacing="0"
-        >
+        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
           <thead>
             <tr>
               <th>Id</th>
@@ -147,6 +158,7 @@ const TableHumi = ({ humis }) => {
           <tfoot>
             <tr>
               <th>Total</th>
+              <th colSpan="2">{humis?.length || 0}</th>
             </tr>
           </tfoot>
           <tbody>
@@ -166,18 +178,28 @@ const TableHumi = ({ humis }) => {
       </div>
     </div>
   );
-};
+});
 
-const TableLightD = ({ lightDs }) => {
+const TableLightD = React.memo(() => {
+  console.log('light render');
+
+  const [lightDs, setLightDs] = useState([]);
+  useLayoutEffect(() => {
+    axios
+      .get(`${env.ENDPOINT}/api.control`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      })
+      .then((res) => res.data)
+      .then((data) => setLightDs(data))
+      .catch((err) => console.log(err));
+  }, []);
+
   return (
-    <div class="card-body" style={{ background: "white" }}>
+    <div class="card-body" style={{ background: 'white' }}>
       <div class="table-responsive">
-        <table
-          class="table table-bordered"
-          id="dataTable"
-          width="100%"
-          cellspacing="0"
-        >
+        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
           <thead>
             <tr>
               <th>Id</th>
@@ -188,6 +210,7 @@ const TableLightD = ({ lightDs }) => {
           <tfoot>
             <tr>
               <th>Total</th>
+              <th colSpan="2">{lightDs?.length || 0}</th>
             </tr>
           </tfoot>
           <tbody>
@@ -207,6 +230,6 @@ const TableLightD = ({ lightDs }) => {
       </div>
     </div>
   );
-};
+});
 
 export default Admin;

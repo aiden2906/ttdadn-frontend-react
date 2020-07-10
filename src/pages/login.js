@@ -1,27 +1,32 @@
-import React, { useState, useRef } from "react";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-
-import Footer from "../components/footer";
-
-const axios = require("axios");
+import React, { useState, useRef } from 'react';
+import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import Footer from '../components/footer';
+import * as env from '../configs/environment';
+const axios = require('axios');
 
 const Login = (props) => {
-  const access_token = localStorage.getItem("token");
+  const access_token = localStorage.getItem('token');
   if (access_token) {
-    props.history.push("/home");
+    props.history.push('/home');
   }
   const [token, setToken] = useState(null);
   const usernameRef = useRef(null);
   const passwordRef = useRef(null);
 
-  async function handleSubmit(e) {
+  function handleSubmit(e) {
     e.preventDefault();
-    const { data } = await axios.put("http://localhost:4000/api.user/login", {
-      username: usernameRef.current.value,
-      password: passwordRef.current.value,
-    });
-    localStorage.setItem("token", data);
-    setToken(data);
+    axios
+      .put(`${env.ENDPOINT}/api.user/login`, {
+        username: usernameRef.current.value,
+        password: passwordRef.current.value,
+      })
+      .then((res) => res.data)
+      .then((data) => {
+        localStorage.setItem('token', data);
+        setToken(data);
+      })
+      .catch((err) => console.log(err));
+
     //TODO: check token
   }
 
@@ -42,37 +47,18 @@ const Login = (props) => {
                         <label class="small mb-1" for="inputEmailAddress">
                           Email
                         </label>
-                        <input
-                          class="form-control py-4"
-                          id="inputEmailAddress"
-                          type="email"
-                          placeholder="Enter email address"
-                          ref={usernameRef}
-                        />
+                        <input class="form-control py-4" id="inputEmailAddress" type="email" placeholder="Enter email address" ref={usernameRef} />
                       </div>
                       <div class="form-group">
                         <label class="small mb-1" for="inputPassword">
                           Password
                         </label>
-                        <input
-                          class="form-control py-4"
-                          id="inputPassword"
-                          type="password"
-                          placeholder="Enter password"
-                          ref={passwordRef}
-                        />
+                        <input class="form-control py-4" id="inputPassword" type="password" placeholder="Enter password" ref={passwordRef} />
                       </div>
                       <div class="form-group">
                         <div class="custom-control custom-checkbox">
-                          <input
-                            class="custom-control-input"
-                            id="rememberPasswordCheck"
-                            type="checkbox"
-                          />
-                          <label
-                            class="custom-control-label"
-                            for="rememberPasswordCheck"
-                          >
+                          <input class="custom-control-input" id="rememberPasswordCheck" type="checkbox" />
+                          <label class="custom-control-label" for="rememberPasswordCheck">
                             Remember password
                           </label>
                         </div>
@@ -81,11 +67,7 @@ const Login = (props) => {
                         <a class="small" href="/password">
                           Forgot Password?
                         </a>
-                        <button
-                          type="submit"
-                          className="btn btn-primary"
-                          onClick={handleSubmit}
-                        >
+                        <button type="submit" className="btn btn-primary" onClick={handleSubmit}>
                           Login
                         </button>
                         {/* <a class="btn btn-primary" href="index.html">

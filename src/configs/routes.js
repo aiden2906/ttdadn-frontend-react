@@ -55,4 +55,10 @@ export default [
     path: "/admin",
     isProtected: true,
   },
+  {
+    title: "Notification | Sample App",
+    component: "Notification",
+    path: "/notification",
+    isProtected: true,
+  },
 ];

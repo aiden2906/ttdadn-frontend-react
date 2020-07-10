@@ -1,22 +1,20 @@
-import React, { useEffect, useState } from "react";
-import socketIOClient from "socket.io-client";
-import "bootstrap/dist/css/bootstrap.min.css";
-import { Tab, Row, Col, Nav, Form, Button } from "react-bootstrap";
-
-import ChartContainer from "../components/ChartContainer/ChartContainer";
-import HistoryChart from "../components/HistoryChart/HistoryChart";
-import "../css/Chart.css";
-
-const axios = require("axios");
-const ENDPOINT = "http://127.0.0.1:4000";
+import React, { useEffect, useState } from 'react';
+import socketIOClient from 'socket.io-client';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { Row, Col, Form } from 'react-bootstrap';
+import ChartContainer from '../components/ChartContainer/ChartContainer';
+import HistoryChart from '../components/HistoryChart/HistoryChart';
+import * as env from '../configs/environment';
+import '../css/Chart.css';
+const axios = require('axios');
 
 export default function Chart() {
   const [history, setHistory] = useState([]);
   const [sensor, setSensor] = useState([]);
   const [data, setData] = useState({});
   useEffect(() => {
-    const socket = socketIOClient(ENDPOINT);
-    socket.on("sensorChange", (data) => {
+    const socket = socketIOClient(env.ENDPOINT);
+    socket.on(env.SOCKET_HUMI, (data) => {
       let dataSensor = data[0];
       let d = new Date();
       let modifiedData = {
@@ -24,8 +22,8 @@ export default function Chart() {
         temp: dataSensor.temp,
         humi: dataSensor.humi,
         name: dataSensor.id,
-        time: d.getMinutes() + ":" + d.getSeconds(),
-        currentTime: d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds(),
+        time: d.getMinutes() + ':' + d.getSeconds(),
+        currentTime: d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds(),
       };
       setSensor((currentHumidity) => [...currentHumidity, modifiedData]);
       setData({
@@ -37,9 +35,9 @@ export default function Chart() {
     });
 
     axios
-      .get(`http://localhost:4000/sensor`, {
+      .get(`${env.ENDPOINT}/api.sensor`, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
       })
       .then((res) => {
@@ -55,11 +53,10 @@ export default function Chart() {
           for (let i = 0; i < 100; i += 9) {
             let d = new Date(parseInt(historyKey[i]));
             let modifiedData = {
-              time: d.getMinutes() + ":" + d.getSeconds(),
+              time: d.getMinutes() + ':' + d.getSeconds(),
               temp: historyValue[i].temp,
               humi: historyValue[i].humi,
-              currentTime:
-                d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds(),
+              currentTime: d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds(),
             };
             listData = [...listData, modifiedData];
             setSensor((currentHumidity) => [...currentHumidity, modifiedData]);
@@ -87,12 +84,12 @@ export default function Chart() {
               <Form>
                 <Form.Group controlId="formBasicEmail">
                   <Form.Label>Humidity: </Form.Label>
-                  <Form.Text style={{ color: "#231bbb" }} className="form-text">
+                  <Form.Text style={{ color: '#231bbb' }} className="form-text">
                     {data.humi ? `${data.humi}%` : null}
                   </Form.Text>
                   <br />
                   <Form.Label>Temp: </Form.Label>
-                  <Form.Text style={{ color: "#c40202" }} className="form-text">
+                  <Form.Text style={{ color: '#c40202' }} className="form-text">
                     {data.temp ? `${data.temp} Celius` : null}
                   </Form.Text>
                   <br />
@@ -100,9 +97,7 @@ export default function Chart() {
                     //TODO: format time 00:00:00
                   }
                   <Form.Label>Time: </Form.Label>
-                  <Form.Text className="form-text">
-                    {data.currentTime}
-                  </Form.Text>
+                  <Form.Text className="form-text">{data.currentTime}</Form.Text>
                 </Form.Group>
               </Form>
             </div>
