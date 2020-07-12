@@ -40,7 +40,16 @@ class App extends React.Component {
 
   protectedRoute({ component: Component, routesMenu, ...rest }) {
     return (
-      <Route {...rest} render={(props) => (localStorage.getItem('token') ? <Component {...props}></Component> : <Redirect to={{ pathname: '/login', state: { from: props.location } }} />)}></Route>
+      <Route
+        {...rest}
+        render={(props) =>
+          localStorage.getItem('token') ? (
+            <Component {...props}></Component>
+          ) : (
+            <Redirect to={{ pathname: '/login', state: { from: props.location } }} />
+          )
+        }
+      ></Route>
     );
   }
   render() {

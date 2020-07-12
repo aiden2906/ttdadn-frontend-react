@@ -5,7 +5,7 @@ import * as env from '../configs/environment';
 const axios = require('axios');
 
 export default function CustomizedSwitch({ device, status: statusDevice }) {
-  const [status, setStatus] = React.useState(statusDevice);
+  const [status, setStatus] = React.useState(parseInt(statusDevice));
 
   const handleChangeSwitch = (event) => {
     const status = event.target.checked;
