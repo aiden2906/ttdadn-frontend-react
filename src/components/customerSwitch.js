@@ -4,10 +4,10 @@ import * as env from '../configs/environment';
 
 const axios = require('axios');
 
-export default function CustomizedSwitch({ device, status: statusDevice }) {
+export default function CustomizedSwitch({ device, status: statusDevice, handleChangeSwitch }) {
   const [status, setStatus] = React.useState(parseInt(statusDevice));
 
-  const handleChangeSwitch = (event) => {
+  const handleSwitchChange = (event) => {
     const status = event.target.checked;
     axios.put(
       `${env.ENDPOINT}/api.control/${device}`,
@@ -21,7 +21,8 @@ export default function CustomizedSwitch({ device, status: statusDevice }) {
       }
     );
     setStatus(event.target.checked);
+    handleChangeSwitch(device, event.target.checked);
   };
 
-  return <Switch checked={status} onChange={handleChangeSwitch} name="setStatus" color="primary" />;
+  return <Switch checked={status} onChange={handleSwitchChange} name="setStatus" color="primary" />;
 }

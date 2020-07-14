@@ -20,7 +20,7 @@ const useStyles = makeStyles({
   },
 });
 
-const CustomizedSlider = ({ device, level }) => {
+const CustomizedSlider = ({ device, level, handleChangeSlider }) => {
   const classes = useStyles();
   const [value, setValue] = React.useState(level);
 
@@ -38,6 +38,7 @@ const CustomizedSlider = ({ device, level }) => {
       }
     );
     setValue(newValue);
+    handleChangeSlider(device, newValue);
   };
 
   return (
