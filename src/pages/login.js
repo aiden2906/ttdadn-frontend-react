@@ -7,7 +7,7 @@ const axios = require('axios');
 const Login = (props) => {
   const access_token = localStorage.getItem('token');
   if (access_token) {
-    props.history.push('/home');
+    props.history.push('/chart');
   }
   const [token, setToken] = useState(null);
   const usernameRef = useRef(null);

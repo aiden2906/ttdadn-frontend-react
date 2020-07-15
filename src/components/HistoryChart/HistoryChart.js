@@ -21,23 +21,9 @@ export default function HistoryChart({ history }) {
     if (Object.values(history).length>0) {
       historyKey = [...Object.keys(history)];
       historyValue = [...Object.values(history)];
-      //console.log(Object.values(history).length);
       let listData = [];
-      // historyKey.map((element, index) => {
-      //   let d = new Date(parseInt(element));
-      //   let modifiedData = {
-      //     time: d.getMinutes() + ":" + d.getSeconds(),
-      //     value: parseInt(historyValue[index] * 100),
-      //   };
-      //   listData = [...listData, modifiedData];
-
-      //  setData(listData);
-      //});
-
       for (let i = 0; i < 100; i += 9) {
         let d = new Date(parseInt(historyKey[i]));
-        //console.log("someone here")
-        //console.log(historyValue[i].temp);
         let modifiedData = {
           time: d.getMinutes() + ":" + d.getSeconds(),
           temp: historyValue[i].temp,

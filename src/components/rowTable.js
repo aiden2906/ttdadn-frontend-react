@@ -8,6 +8,7 @@ import CustomizedSlider from '../components/customerSlider';
 import * as env from '../configs/environment';
 import socketIOClient from 'socket.io-client';
 import '../css/controller.css';
+const _ = require('lodash');
 const axios = require('axios');
 
 const useRowStyles = makeStyles({
@@ -27,6 +28,10 @@ export const Row = (props) => {
       const myroom = data.find((item) => item.id === roomId);
       setRoom(myroom);
     });
+    socket.on('controlChange', (data) => {
+      const free_device = data.filter((item) => item.status_device === 'free').map((item) => item.id);
+      setDevices(free_device);
+    });
     axios
       .get(`${env.ENDPOINT}/api.room/${roomId}`, {
         headers: {
@@ -41,7 +46,7 @@ export const Row = (props) => {
       .catch((err) => console.log(err));
 
     axios
-      .get(`${env.ENDPOINT}/api.control`, {
+      .get(`${env.ENDPOINT}/api.room/${roomId}/all-visible-device`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
@@ -54,15 +59,10 @@ export const Row = (props) => {
       .catch((err) => console.log(err));
   }, []);
 
-  const handleSubmit = (e) => {
-    const new_devices = devices.filter((device) => e.target[device].checked);
-    console.log(new_devices);
-  };
-
   const handleChangeSwitch = (device_id, value) => {
     const new_devices = room.devices.map((device) => {
       if (device.id === device_id) {
-        device.status = value;
+        device.status = value ? '1' : '0';
       }
       return device;
     });
@@ -84,6 +84,20 @@ export const Row = (props) => {
   const handleOnchangeCheckbox = (device) => {
     axios
       .put(`${env.ENDPOINT}/api.room/${room.id}`, { device_id: device }, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } })
+      .then(() => {
+        axios
+          .get(`${env.ENDPOINT}/api.room/${roomId}/all-visible-device`, {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem('token')}`,
+            },
+          })
+          .then((res) => res.data)
+          .then((data) => {
+            const device_id = data.map((item) => item.id);
+            setDevices(device_id);
+          })
+          .catch((err) => console.log(err));
+      })
       .catch((err) => console.log(err));
   };
 
@@ -98,13 +112,14 @@ export const Row = (props) => {
             {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
           </IconButton>
         </TableCell>
-        <TableCell align="center">10</TableCell>
-        <TableCell align="center">10</TableCell>
+        <TableCell align="center">{room.createdBy}</TableCell>
+        <TableCell align="center">{room.createdAt ? new Date(room.createdAt).toLocaleDateString() : ''}</TableCell>
+        <TableCell align="center">{room.updatedAt ? new Date(room.updatedAt).toLocaleDateString() : ''}</TableCell>
         <TableCell align="center">
           <button type="button" class="btn btn-secondary mt-3" id="button-add-device" data-toggle="modal" data-target={`#changeRoom${room.name}`}>
             <i class="fa fa-retweet"></i>
           </button>
-          <form class="form" onSubmit={handleSubmit}>
+          <form class="form">
             <div class="modal fade" id={`changeRoom${room.name}`} tabindex="-1" role="dialog" aria-labelledby="changeRoomLabel">
               <div class="modal-dialog modal-sm" role="document">
                 <div class="modal-content">
@@ -117,8 +132,8 @@ export const Row = (props) => {
                     </button>
                   </div>
                   <div class="modal-body">
-                    {devices
-                      ? devices.map((device) => {
+                    {devices || room.devices
+                      ? _.unionBy(devices || [], room.controlDeviceIds || []).map((device) => {
                           return (
                             <div class="form-check">
                               <input
@@ -173,7 +188,7 @@ export const Row = (props) => {
                           </TableCell>
                         </TableRow>
                       ))
-                    : null}
+                    : 'No Device'}
                 </TableBody>
               </Table>
             </Box>

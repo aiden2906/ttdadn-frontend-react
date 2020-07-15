@@ -33,6 +33,11 @@ export default function Controller() {
       console.log('changeRoom', data);
       setRooms(data);
     });
+
+    socket.on('controlChange', (data) => {
+      const free_data = data.filter((item) => item.status_device === 'free');
+      setDevices(free_data);
+    });
     axios
       .get(`${env.ENDPOINT}/api.room`, {
         headers: {
@@ -66,7 +71,7 @@ export default function Controller() {
 
     axios
       .get(
-        `${env.ENDPOINT}/api.control`,
+        `${env.ENDPOINT}/api.room/all-rest-device`,
         {},
         {
           headers: {
@@ -136,8 +141,9 @@ export default function Controller() {
             <TableHead>
               <TableRow>
                 <TableCell align="center">Room </TableCell>
-                <TableCell align="center">Temperature ( {'\u00b0'} C )</TableCell>
-                <TableCell align="center">Humidity ( % )</TableCell>
+                <TableCell align="center">Created By</TableCell>
+                <TableCell align="center">Created At</TableCell>
+                <TableCell align="center">Updated By</TableCell>
                 <TableCell align="center">Change</TableCell>
               </TableRow>
             </TableHead>

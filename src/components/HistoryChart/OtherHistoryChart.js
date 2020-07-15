@@ -46,14 +46,12 @@ export default function OtherHistoryChart({ history }) {
     if (Object.values(history).length > 0) {
       historyKey = [...Object.keys(history)];
       historyValue = [...Object.values(history)];
-      //console.log(historyValue);
       let listData = [];
       let listHours = [];
       let averageHumi = [];
       let averageTemp = [];
       for (let i = 0; i < 100; i++) {
         let d = new Date(parseInt(historyKey[i]));
-        //console.log(d.getHours());
         if (listHours.length <= 0) {
           listHours.push(d.getHours());
           averageHumi.push([parseInt(historyValue[i].humi)]);
@@ -74,16 +72,11 @@ export default function OtherHistoryChart({ history }) {
         }
       }
 
-      //   console.log(listHours)
-      //console.log(averageHumi);
-      //   console.log(averageHumi);
       averageHumi.forEach((element, index) => {
         let lengthofelementhumi = element.length;
         let lengthofelementtemp = averageTemp[index].length;
         let sumHumi = element.reduce((a, b) => a + b, 0);
         let sumTemp = averageTemp[index].reduce((a, b) => a + b, 0);
-        //console.log(parseInt(sum/lengthofelement));
-        //averageHumi[index] = 1;
         let modifiedData = {
           time: listHours[index].toString(),
           humi: parseInt(sumHumi / lengthofelementhumi).toString(),
@@ -91,19 +84,6 @@ export default function OtherHistoryChart({ history }) {
         };
         listData = [...listData, modifiedData];
       });
-
-      //   for (let i = 0; i < 100; i += 9) {
-      //     let d = new Date(parseInt(historyKey[i]));
-      //     let modifiedData = {
-      //       time: d.getMinutes() + ":" + d.getSeconds(),
-      //       temp: historyValue[i].temp,
-      //       humi: historyValue[i].humi,
-      //       currentTime:
-      //         d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds(),
-      //     };
-      //     listData = [...listData, modifiedData];
-      //     //console.log(listData);
-      //   }
       setData((currenthistory) => listData);
     }
   }, [history]);
@@ -138,4 +118,3 @@ export default function OtherHistoryChart({ history }) {
   );
 }
 
-// fill={colors[index % 20]}
