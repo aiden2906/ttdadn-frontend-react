@@ -7,4 +7,6 @@ const SOCKET_COUNT_NOTIFICATION = process.env.SOCKET_COUNT_NOTI || 'count-notifi
 const SOCKET_HUMI = process.env.SOCKET_HUMI || 'sensorChange';
 const SOCKET_LIGHTD = process.env.SOCKET_LIGHTD || 'controlChange';
 
+console.log(process.env.ENDPOINT)
+
 export { BASE_URL, ENDPOINT, SOCKET_NOTIFICATION, SOCKET_HUMI, SOCKET_LIGHTD, SOCKET_COUNT_NOTIFICATION };
