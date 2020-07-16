@@ -7,7 +7,7 @@ const Footer = () => {
         <div class="d-flex align-items-center justify-content-between small">
           <div class="text-muted">Thực tập đồ án đa ngành HK192</div>
           <div>
-            <a href="https://Gitlab">Gitlab Project</a>
+            <a href="https://gitlab.com/quangtranthanh">Gitlab Project</a>
           </div>
           {/* <div>
             <a href="#">Privacy Policy</a>

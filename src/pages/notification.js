@@ -11,6 +11,7 @@ const Notification = () => {
   useLayoutEffect(() => {
     const socket = socketIOClient(env.ENDPOINT);
     socket.on('count_notifications', (data) => {
+      console.log(data);
       setNotifications(data);
     });
 
@@ -48,16 +49,18 @@ const Notification = () => {
               </thead>
               <tbody>
                 {notifications
-                  ? notifications.map((notification) => {
-                      const time = new Date(notification.created_at);
-                      return (
-                        <tr className={notification.status === 'seen' ? 'seen' : 'new'} onClick={() => handleSeen(notification)}>
-                          <td>{notification.device_id}</td>
-                          <td>{notification.content}</td>
-                          <td>{notification.created_at ? `${time.getHours()}:${time.getMinutes()} ${time.toLocaleDateString()}` : ''}</td>
-                        </tr>
-                      );
-                    }).reverse()
+                  ? notifications
+                      .map((notification) => {
+                        const time = new Date(notification.created_at);
+                        return (
+                          <tr className={notification.status === 'seen' ? 'seen' : 'new'} onClick={() => handleSeen(notification)}>
+                            <td>{notification.device_id}</td>
+                            <td>{notification.content}</td>
+                            <td>{notification.created_at ? `${time.getHours()}:${time.getMinutes()} ${time.toLocaleDateString()}` : ''}</td>
+                          </tr>
+                        );
+                      })
+                      .reverse()
                   : null}
               </tbody>
             </table>

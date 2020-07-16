@@ -33,8 +33,8 @@ class App extends React.Component {
   componentWillMount() {
     const socket = socketIOClient(env.ENDPOINT);
     socket.on(env.SOCKET_NOTIFICATION, (data) => {
-      const { device_id, content } = data;
-      this.createNotification('warning', `${device_id} : ${content}`);
+      const { device_id, content, type } = data;
+      this.createNotification(type, `${device_id} : ${content}`);
     });
   }
 
