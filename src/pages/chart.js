@@ -39,7 +39,7 @@ export default function Chart() {
               time: d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds(),
               temp: historyValue[i].temp,
               humi: historyValue[i].humi,
-              currentTime: d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds(),
+              currentTime: (d.getHours()<10 ? '0'+d.getHours() : d.getHours()) + ':' + d.getMinutes() + ':' + d.getSeconds(),
             };
             listData = [...listData, modifiedData];
             setSensor((currentHumidity) => [...currentHumidity, modifiedData]);
@@ -62,7 +62,7 @@ export default function Chart() {
         humi: dataSensor.humi,
         name: dataSensor.id,
         time: d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds(),
-        currentTime: d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds(),
+        currentTime: (d.getHours()<10 ? '0'+d.getHours() : d.getHours()) + ':' + d.getMinutes() + ':' + d.getSeconds(),
       };
       setSensor((currentHumidity) => [...currentHumidity, modifiedData]);
       setData({
