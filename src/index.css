@@ -5,7 +5,9 @@
 }
 
 body {
-	background: #1c8ef9 !important;
+	background-image: linear-gradient(rgba(0,0,0,0.3) 50%,rgba(0,0,0,0.4) 100%), url('./assets/photo-1492737096399-cf0c3eae286f.jfif');
+  background-repeat: no-repeat;
+	background-size: cover;
 	min-height: 100vh;
 	display: flex;
 	font-weight: 400;
