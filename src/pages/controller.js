@@ -5,6 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import socketIOClient from 'socket.io-client';
 import { Row } from '../components/rowTable';
 import '../css/controller.css';
+const jwt = require('jsonwebtoken');
 const axios = require('axios');
 
 const useStyles = makeStyles({
@@ -19,14 +20,14 @@ const useStyles = makeStyles({
 export default function Controller() {
   const classes = useStyles();
   const [rooms, setRooms] = useState([]);
+  const [devices, setDevices] = useState([]);
   const [value, setValue] = useState({
     small: 0,
     medium: 0,
     large: 0,
   });
-
-  const [devices, setDevices] = useState([]);
-
+  const token = localStorage.getItem('token');
+  const payload = jwt.verify(token, 'secretKey');
   useEffect(() => {
     const socket = socketIOClient(env.ENDPOINT);
     socket.on('changeRoom', (data) => {
@@ -160,9 +161,11 @@ export default function Controller() {
       <button type="button" class="btn btn-secondary mt-3" id="button-setting" data-toggle="modal" data-target="#exampleModalLong">
         <i class="fa fa-cog"></i>
       </button>
-      <button type="button" class="btn btn-secondary mt-3" id="button-add" data-toggle="modal" data-target="#addModal">
-        <i class="fa fa-plus-square"></i> Add Room
-      </button>
+      {payload.username === 'admin@gmail.com' ? (
+        <button type="button" class="btn btn-secondary mt-3" id="button-add" data-toggle="modal" data-target="#addModal">
+          <i class="fa fa-plus-square"></i> Add Room
+        </button>
+      ) : null}
       <form class="form" onSubmit={handleSubmit}>
         <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle">
           <div class="modal-dialog" role="document">
