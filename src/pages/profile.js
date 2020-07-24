@@ -63,7 +63,7 @@ const Profile = () => {
   return (
     <main>
       <div class="container-fluid mt-3">
-        <form class="form">
+        <form class="form" onSubmit={handleEditProfile}>
           <div class="row">
             <div class="col">
               <div class="row">
@@ -95,7 +95,7 @@ const Profile = () => {
                 <div class="col">
                   <div class="form-group">
                     <label>Email</label>
-                    <input class="form-control" type="text" ref={emailRef} />
+                    <input class="form-control" id="inputEmailAddress" type="email" ref={emailRef} />
                   </div>
                 </div>
               </div>
@@ -144,9 +144,8 @@ const Profile = () => {
           <div class="row">
             <div class="col d-flex justify-content-end">
               <button
-                class="btn btn-primary"
+                class="btn btn-info"
                 type="submit"
-                onClick={handleEditProfile}
               >
                 Save Changes
               </button>
