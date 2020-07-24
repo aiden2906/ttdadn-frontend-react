@@ -59,6 +59,12 @@ const SideNav = (props) => {
               </div>
               Notification <NotificationBadge count={count} effect={Effect.SCALE} />
             </Link>
+            <Link class="nav-link" to="about">
+              <div class="sb-nav-link-icon">
+              <i class="fa fa-address-card"></i>
+              </div>
+              About
+            </Link>
             {payload?.username === 'admin@gmail.com' ? (
               <Link class="nav-link" to="admin">
                 <div class="sb-nav-link-icon">
@@ -70,8 +76,8 @@ const SideNav = (props) => {
           </div>
         </div>
         <div class="sb-sidenav-footer">
-          <button type="submit" className="btn btn-primary" onClick={handleLogout}>
-            Log out
+          <button type="submit" className="btn btn-danger" onClick={handleLogout}>
+          <i class="fa fa-times-circle"></i> Log out
           </button>
         </div>
       </nav>
