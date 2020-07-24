@@ -25,12 +25,12 @@ export default [
     path: "/reset-password",
     isProtected: false,
   },
-  // {
-  //   title: "Home | Sample App",
-  //   component: "Home",
-  //   path: "/home",
-  //   isProtected: true,
-  // },
+  {
+    title: "About | Sample App",
+    component: "About",
+    path: "/about",
+    isProtected: true,
+  },
   {
     title: "Chart | Sample App",
     component: "Chart",
