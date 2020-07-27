@@ -31,6 +31,18 @@ export const Row = (props) => {
     socket.on('controlChange', (data) => {
       const free_device = data.filter((item) => item.status_device === 'free').map((item) => item.id);
       setDevices(free_device);
+      axios
+      .get(`${env.ENDPOINT}/api.room/${roomId}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      })
+      .then((res) => res.data)
+      .then((data) => {
+        console.log('fetch data', data);
+        setRoom(data);
+      })
+      .catch((err) => console.log(err));
     });
     axios
       .get(`${env.ENDPOINT}/api.room/${roomId}`, {

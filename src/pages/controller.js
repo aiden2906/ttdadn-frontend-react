@@ -22,9 +22,9 @@ export default function Controller() {
   const [rooms, setRooms] = useState([]);
   const [devices, setDevices] = useState([]);
   const [value, setValue] = useState({
-    small: 0,
-    medium: 0,
-    large: 0,
+    upper: 0,
+    lower: 0,
+    val: 0,
   });
   const token = localStorage.getItem('token');
   const payload = jwt.verify(token, 'secretKey');
@@ -63,9 +63,9 @@ export default function Controller() {
       .then((data) => {
         console.log('data', data);
         setValue({
-          small: parseInt(data[2]),
-          medium: parseInt(data[1]),
-          large: parseInt(data[0]),
+          upper: parseInt(data[1]),
+          lower: parseInt(data[0]),
+          val: parseInt(data[2]),
         });
       })
       .catch((err) => console.log(err));
@@ -112,9 +112,9 @@ export default function Controller() {
         `${env.ENDPOINT}/api.control/setting`,
         {
           setting: {
-            small: e.target.small.value,
-            medium: e.target.medium.value,
-            large: e.target.large.value,
+            upper: e.target.upper.value,
+            lower: e.target.lower.value,
+            val: e.target.val.value,
           },
         },
         {
@@ -221,35 +221,35 @@ export default function Controller() {
                 </button>
               </div>
               <div class="modal-body">
-                Mức độ cảnh báo thường
+                Ngưỡng trên
                 <Slider
-                  value={value.small}
+                  value={value.upper}
                   step={1}
                   min={0}
                   valueLabelDisplay="auto"
                   max={100}
-                  name="small"
-                  onChange={(e, newValue) => handleChangeValue(e, newValue, 'small')}
+                  name="upper"
+                  onChange={(e, newValue) => handleChangeValue(e, newValue, 'upper')}
                 />
-                Mức độ cảnh báo chú ý
+                Ngưỡng dưới
                 <Slider
-                  value={value.medium}
+                  value={value.lower}
                   step={1}
                   min={0}
                   valueLabelDisplay="auto"
                   max={100}
-                  name="medium"
-                  onChange={(e, newValue) => handleChangeValue(e, newValue, 'medium')}
+                  name="lower"
+                  onChange={(e, newValue) => handleChangeValue(e, newValue, 'lower')}
                 />
-                Mức độ cảnh báo nguy hiểm
+                Cường độ đèn
                 <Slider
-                  value={value.large}
+                  value={value.val}
                   step={1}
                   min={0}
                   valueLabelDisplay="auto"
-                  max={100}
-                  name="large"
-                  onChange={(e, newValue) => handleChangeValue(e, newValue, 'large')}
+                  max={255}
+                  name="val"
+                  onChange={(e, newValue) => handleChangeValue(e, newValue, 'val')}
                 />
               </div>
               <div class="modal-footer">
