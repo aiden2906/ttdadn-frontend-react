@@ -24,9 +24,7 @@ class App extends React.Component {
       case 'warning':
         return NotificationManager.warning(content, 'Close after 10000ms', 10000);
       case 'error':
-        return NotificationManager.error(content, 'Click me!', 5000, () => {
-          alert('callback');
-        });
+        return NotificationManager.error(content, 'Click me!', 5000);
     }
   }
 

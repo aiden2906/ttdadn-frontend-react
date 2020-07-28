@@ -39,38 +39,38 @@ const SideNav = (props) => {
               <div class="sb-nav-link-icon">
                 <i class="fa fa-bar-chart" aria-hidden="true"></i>
               </div>
-              Charts
+              &nbsp;&nbsp;&nbsp;&nbsp;Charts
             </Link>
             <Link class="nav-link" to="controller">
               <div class="sb-nav-link-icon">
                 <i class="fa fa-table"></i>
               </div>
-              Controller
+              &nbsp;&nbsp;&nbsp;&nbsp;Controller
             </Link>
             <Link class="nav-link" to="profile">
               <div class="sb-nav-link-icon">
                 <i class="fa fa-user" aria-hidden="true"></i>
               </div>
-              Profile
+              &nbsp;&nbsp;&nbsp;&nbsp;Profile
             </Link>
             <Link class="nav-link" to="notification">
               <div class="sb-nav-link-icon">
-                <i class="fa fa-bell" aria-hidden="true"></i>
+                <i style={{position:'relative'}} class="fa fa-bell" aria-hidden="true"><div style={{position:'absolute', top:'-10px', right:'-18px'}}><NotificationBadge count={count} effect={Effect.SCALE} /></div></i>
               </div>
-              Notification <NotificationBadge count={count} effect={Effect.SCALE} />
+              &nbsp;&nbsp;&nbsp;&nbsp;Notification
             </Link>
             <Link class="nav-link" to="about">
               <div class="sb-nav-link-icon">
               <i class="fa fa-address-card"></i>
               </div>
-              About
+              &nbsp;&nbsp;&nbsp;&nbsp;About
             </Link>
             {payload?.username === 'admin@gmail.com' ? (
               <Link class="nav-link" to="admin">
                 <div class="sb-nav-link-icon">
                   <i class="fa fa-user-secret" aria-hidden="true"></i>
                 </div>
-                Admin
+                &nbsp;&nbsp;&nbsp;&nbsp;Admin
               </Link>
             ) : null}
           </div>
