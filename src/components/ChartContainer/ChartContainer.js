@@ -14,7 +14,6 @@ import {
 } from "recharts";
 export default function ChartContainer({ data, select}) {
   let getdata = data;
-  console.log(data);  
   const [state, setState] = useState(window.innerWidth < 1200 ? 500 : 1020);
   useEffect(() => {
     window.addEventListener("resize", () => {

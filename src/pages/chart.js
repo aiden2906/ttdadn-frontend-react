@@ -66,14 +66,17 @@ export default function Chart() {
                 d.getSeconds(),
             };
             // 30ph
-            if(currentTimeNumber - parseInt(historyKey[i]) <= select*1000*60*60 ){
+            if (
+              currentTimeNumber - parseInt(historyKey[i]) <=
+              select * 1000 * 60 * 60
+            ) {
               listData = [...listData, modifiedData];
             }
             // 1h
             // if(currentTimeNumber - parseInt(historyKey[i]) <= select*1000*60*60 ){
             //   lisDataOfTwoHour = [...lisDataOfTwoHour, modifiedData];
             // }
-    
+
             // setSensor((currentHumidity) => [...currentHumidity, modifiedData]);
             setData({
               humi: modifiedData.humi,
@@ -83,17 +86,23 @@ export default function Chart() {
             setHistory((currentHistory) => data[0].history);
           }
           let listFilterData = [];
-          for(let i =0 ; i< listData.length;i+=parseInt(listData.length/10)){
+          for (
+            let i = 0;
+            i < listData.length;
+            i += parseInt(listData.length / 10)
+          ) {
             listFilterData = [...listFilterData, listData[i]];
           }
-          console.log(listFilterData);
+          //console.log(listFilterData);
           //console.log(historyKey);
-          // console.log(lisDataOfTwoHour);
-          console.log(listData);
-          // setSensorTwoHour((currentHumidity) => [...currentHumidity, ...lisDataOfTwoHour]);
+
+          //console.log(listData);
+
           setSensor((currentHumidity) => []);
-          setSensor((currentHumidity) => [...currentHumidity, ...listFilterData]);
-    
+          setSensor((currentHumidity) => [
+            ...currentHumidity,
+            ...listFilterData,
+          ]);
         }
       });
     socket.on("sensorChange", (data) => {
@@ -124,10 +133,10 @@ export default function Chart() {
   }, [select]);
 
   // Display chart by the time
-  const handleClick = ()=>{
-    setSelect(parseFloat(selectRef.current.value)); 
+  const handleClick = () => {
+    setSelect(parseFloat(selectRef.current.value));
     //console.log(select);
-  }
+  };
 
   return (
     <div className="wrapper">
@@ -141,18 +150,27 @@ export default function Chart() {
               <OtherHistoryChart className="line-chart" history={history} />
             </div>
             <div className="humidity_chart">
-              <ChartContainer className="line-chart" data={sensor}  select = {select} /> 
+              <ChartContainer
+                className="line-chart"
+                data={sensor}
+                select={select}
+              />
               <br />
               <Form>
                 <Form.Group>
                   <Form.Label>In time: </Form.Label>
-                  <Form.Control ref = {selectRef} as="select" className="my-1 mr-sm-2" custom>
+                  <Form.Control
+                    ref={selectRef}
+                    as="select"
+                    className="my-1 mr-sm-2"
+                    custom
+                  >
                     <option value="1">1 hour</option>
                     <option value="2">2 hours</option>
                   </Form.Control>
                 </Form.Group>
               </Form>
-              <Button onClick = {handleClick}>Click me Please</Button>
+              <Button onClick={handleClick}>Click me Please</Button>
             </div>
 
             <div className="form-info">
