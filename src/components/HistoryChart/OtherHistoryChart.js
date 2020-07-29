@@ -43,31 +43,35 @@ export default function OtherHistoryChart({ history }) {
   let historyKey = [];
   let historyValue = [];
   useEffect(() => {
+    const now = new Date().getHours();
     if (Object.values(history).length > 0) {
-      historyKey = [...Object.keys(history)];
-      historyValue = [...Object.values(history)];
       let listData = [];
       let listHours = [];
       let averageHumi = [];
       let averageTemp = [];
-      for (let i = 0; i < 100; i++) {
+      historyKey = [...Object.keys(history)];
+      historyValue = [...Object.values(history)];
+      historyKey = historyKey.filter((item) => {
+        const his = new Date(parseInt(item)).getHours();
+        if (now - his < 0) {
+          return now + 24 - his < 3;
+        }
+        return now - his < 3;
+      });
+      for (let i = 0; i < historyKey.length; i++) {
         let d = new Date(parseInt(historyKey[i]));
         if (listHours.length <= 0) {
           listHours.push(d.getHours());
-          averageHumi.push([parseInt(historyValue[i].humi)]);
-          averageTemp.push([parseInt(historyValue[i].temp)]);
+          averageHumi.push([parseInt(history[historyKey[i]].humi)]);
+          averageTemp.push([parseInt(history[historyKey[i]].temp)]);
         } else {
           if (d.getHours() != listHours[listHours.length - 1]) {
             listHours.push(d.getHours());
-            averageHumi.push([parseInt(historyValue[i].humi)]);
-            averageTemp.push([parseInt(historyValue[i].temp)]);
+            averageHumi.push([parseInt(history[historyKey[i]].humi)]);
+            averageTemp.push([parseInt(history[historyKey[i]].temp)]);
           } else {
-            averageHumi[averageHumi.length - 1].push(
-              parseInt(historyValue[i].humi)
-            );
-            averageTemp[averageTemp.length - 1].push(
-              parseInt(historyValue[i].temp)
-            );
+            averageHumi[averageHumi.length - 1].push(parseInt(history[historyKey[i]].humi));
+            averageTemp[averageTemp.length - 1].push(parseInt(history[historyKey[i]].temp));
           }
         }
       }
@@ -84,7 +88,7 @@ export default function OtherHistoryChart({ history }) {
         };
         listData = [...listData, modifiedData];
       });
-      setData((currenthistory) => listData);
+      setData(listData);
     }
   }, [history]);
   const formatter = (value) => `${value}h`;
