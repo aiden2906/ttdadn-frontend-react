@@ -65,15 +65,3 @@ export default function ChartContainer({ data, select}) {
     </AreaChart>
   );
 }
-
-{
-  /* <Form>
-        <Form.Group>
-          <Form.Label>In time: </Form.Label>
-          <Form.Control as="select" className="my-1 mr-sm-2" custom>
-            <option value="1">1 hour</option>
-            <option value="2">2 hours</option>
-          </Form.Control>
-        </Form.Group>
-      </Form> */
-}
